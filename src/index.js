@@ -4,5 +4,4 @@ import App from './routes';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
 serviceWorker.unregister();
