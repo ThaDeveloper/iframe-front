@@ -1,10 +1,8 @@
+<<<<<<< HEAD
 import React, { Component } from "react";
-// import logo from "../../assets/images/logo.svg";
-import "./App.scss";
+import logo from "../../assets/images/logo.svg";
 
 export default class Dashboard extends Component {
-
-
 render() {
   const { user } = this.props;
   return (
@@ -15,9 +13,11 @@ render() {
         </p>
         <a>
           DashBoard
+
         </a>
       </header>
     </div>
   );
-}
+
 };
+
