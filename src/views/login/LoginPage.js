@@ -2,23 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AuthenticationAPI from "../../api/AuthenticationAPI";
 import '../../assets/css/style.css';
-import './signup.scss';
+import './login.scss';
 
-const ERROR_MESSAGES = {
-  username:
-    "Enter a username with more than 3 characters. Start with a letter and no spaces in between the characters.",
-  email: "Invalid email address",
-  password:
-    "Password must be more than 7 characters and at least 1 lowercase and 1 number"
-};
-
-const VALIDATION_REGEX = {
-  username: /^[a-zA-Z][a-zA-Z0-9]{3,}$/,
-  email: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-  password: /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/
-};
-
-class SignUpPage extends Component {
+class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,19 +28,22 @@ class SignUpPage extends Component {
     e.preventDefault();
     const { history } = this.props;
     const { data } = this.state;
-
-    if (this.isFormValid()) {
-      AuthenticationAPI.authorizeUser('register', data).then(response => {
-        if (response.success) history.push("/login");
+    console.log(data);
+    if (true) {
+      AuthenticationAPI.authorizeUser('login', data).then(response => {
+        if (response.success) {
+            localStorage.setItem('token', response.content.data.token);
+            history.push("/");
+        }
         else {
           let submitError = "";
+          console.log(response)
           switch (response.error.response.status) {
             case 400:
-              submitError =
-                "User registration failed. Please fill in valid inputs!";
+              submitError = response.error.response.data.error;
               break;
             default:
-              submitError = "User registration failed. Please try again later!";
+              submitError = "User login failed. Please try again later!";
               break;
           }
           this.setState({ submitError, errors: response.error.response.data});
@@ -66,8 +55,6 @@ class SignUpPage extends Component {
   handleChange = e => {
     const { name, value } = e.target;
     const { errors, data } = this.state;
-    errors[name] =
-      value.match(VALIDATION_REGEX[name]) === null ? ERROR_MESSAGES[name] : "";
     data[name] = value;
     this.setState({ errors, data });
   };
@@ -80,13 +67,6 @@ class SignUpPage extends Component {
     data.confirm_password = value;
 
     this.setState({ data, errors });
-  };
-
-  isFormValid = () => {
-    const { errors, data } = this.state;
-    return !Object.values({ ...errors, ...data }).findIndex(
-      value => value !== ""
-    );
   };
 
   render() {
@@ -106,37 +86,26 @@ class SignUpPage extends Component {
               <div className="mb-4">
                 <i className="feather icon-user-plus auth-icon">r</i>
               </div>
-              <h3 className="mb-4">Sign up</h3>
+              <h3 className="mb-4">Log in</h3>
               <div className="input-group mb-3">
                 <input
-                  autoComplete="off"
-                  placeholder="Username"
+                  autoComplete="on"
+                  placeholder="Email"
                   className="form-control"
                   type="text"
-                  name="username"
-                  id="username"
+                  name="email"
+                  id="email"
                   onChange={this.handleChange}
                   
                 />
               </div>
                 {errors.username ? <p className="signup-input-error">{errors.username}</p> : ""}
-              <div className="input-group mb-3">
-                <input
-                  autoComplete="off"
-                  placeholder="johndoe@email.com"
-                  type="text"
-                  name="email"
-                  id="email"
-                  className="form-control"
-                  onChange={this.handleChange}
-                  
-                />
-              </div>
+             
                 {errors.email ? <p className="signup-input-error">{errors.email}</p> : ""}
 
               <div className="input-group mb-3">
                 <input
-                  autoComplete="off"
+                  autoComplete="on"
                   placeholder="Password"
                   type="password"
                   name="password"
@@ -148,26 +117,13 @@ class SignUpPage extends Component {
               </div>
                 {errors.password ? <p className="signup-input-error">{errors.password}</p> : ""}
 
-              <div className="input-group mb-3">
-                <input
-                  autoComplete="off"
-                  placeholder="Confirm Password"
-                  type="password"
-                  name="confirm_password"
-                  id="confirm-password"
-                  className="form-control"
-                  onChange={this.handleConfirmPassword}
-                  
-                />
-              </div>
-                {errors.confirm_password ? <p className="signup-input-error">{errors.confirm_password}</p> : ""}
-
+        
               {submitError ? <p className="signup-input-error">{submitError}</p> : ""}
               <button type="submit" className="btn btn-primary shadow-2 mb-4">
-                Sign up
+                Log In
               </button>
               <p className="mb-0 text-muted">
-                Already have an account? <a className='login-signup-link' onClick={ () => history.push('/login')}> Log in.</a>
+                Don't have an account? <a className='login-signup-link' onClick={ () => history.push('/signup')}> Sign Up</a>
               </p>
             </div>
           </div>
@@ -177,10 +133,10 @@ class SignUpPage extends Component {
   }
 }
 
-SignUpPage.propTypes = {
+LoginPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired
 };
 
-export default SignUpPage;
+export default LoginPage;
