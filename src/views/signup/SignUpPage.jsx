@@ -48,7 +48,7 @@ class SignUpPage extends Component {
         if (response.success) history.push("/login");
         else {
           let submitError = "";
-          switch (response.error.response.status) {
+          switch (response.error.status) {
             case 400:
               submitError =
                 "User registration failed. Please fill in valid inputs!";
@@ -57,7 +57,7 @@ class SignUpPage extends Component {
               submitError = "User registration failed. Please try again later!";
               break;
           }
-          this.setState({ submitError, errors: response.error.response.data});
+          this.setState({ submitError, errors: response.error.data});
         }
       });
     }
