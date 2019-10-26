@@ -1,0 +1,16 @@
+.signup-input-error {
+    color: red;
+    display: block;
+    font-size: .7em;
+    padding: 0;
+}
+
+.login-signup-link {
+    cursor: pointer;
+    
+}
+.login-signup-link:hover {
+    cursor: pointer;
+    color: rgb(67, 112, 235);
+    text-decoration: underline !important;
+}
