@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AuthenticationAPI from "../../api/AuthenticationAPI";
-import '../../assets/css/style.css';
 import './login.scss';
 
 class LoginPage extends Component {
@@ -10,16 +9,12 @@ class LoginPage extends Component {
     this.state = {
       submitError: "",
       errors: {
-        username: "",
         email: "",
         password: "",
-        confirm_password: ""
       },
       data: {
-        username: "",
         email: "",
-        password: "",
-        confirm_password: ""
+        password: ""
       }
     };
   }
@@ -28,26 +23,24 @@ class LoginPage extends Component {
     e.preventDefault();
     const { history } = this.props;
     const { data } = this.state;
-    if (true) {
-      AuthenticationAPI.authorizeUser('login', data).then(response => {
-        if (response.success) {
-            localStorage.setItem('token', response.content.data.token);
-            history.push("/");
+
+    AuthenticationAPI.authorizeUser("login", data).then(response => {
+      if (response.success) {
+        localStorage.setItem("user", JSON.stringify(response.content.data));
+        history.push("/admin");
+      } else {
+        let submitError = "";
+        switch (response.error.status) {
+          case 400:
+            submitError = response.error.data.error;
+            break;
+          default:
+            submitError = "User login failed. Please try again later!";
+            break;
         }
-        else {
-          let submitError = "";
-          switch (response.error.response.status) {
-            case 400:
-              submitError = response.error.response.data.error;
-              break;
-            default:
-              submitError = "User login failed. Please try again later!";
-              break;
-          }
-          this.setState({ submitError, errors: response.error.response.data});
-        }
-      });
-    }
+        this.setState({ submitError, errors: response.error.data });
+      }
+    });
   };
 
   handleChange = e => {
@@ -97,8 +90,6 @@ class LoginPage extends Component {
                   
                 />
               </div>
-                {errors.username ? <p className="signup-input-error">{errors.username}</p> : ""}
-             
                 {errors.email ? <p className="signup-input-error">{errors.email}</p> : ""}
 
               <div className="input-group mb-3">

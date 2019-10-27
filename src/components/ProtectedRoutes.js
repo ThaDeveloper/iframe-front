@@ -9,7 +9,7 @@ const defaultUserState = {
     user: {
         name: "Guest"
     },
-    loggedIn: false
+    loggedIn: true
 };
     
 export default function(Page) {
@@ -23,8 +23,7 @@ export default function(Page) {
 
     componentDidMount() {
       const { history } = this.props;
-      const token = localStorage.getItem("token");
-      const user = this.verifyToken(token);
+      const user = JSON.parse(localStorage.getItem("user"));
       if (!user) {
         history.push("/login");
       } else {
@@ -32,18 +31,12 @@ export default function(Page) {
       }
     }
 
-    logout = () => this.setState({ ...defaultUserState });
-
-    verifyToken(token) {
-      return jwt.verify(
-        token,
-        process.env.REACT_APP_JWT_SECRET_KEY,
-        (error, decodedToken) => {
-          if (error) return false;
-          return decodedToken;
-        }
-      );
-    }
+    logout = () => {
+      const { history } = this.props;
+      localStorage.removeItem("user");
+      this.setState({ ...defaultUserState });
+      history.push("/login");
+    };
 
     render() {
       const { user, loggedIn } = this.state;

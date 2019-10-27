@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { BrowserRouter as Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import CheckoutFormPage from "./checkoutForm";
 import SideMenu from "./sideMenu";
 import AdminContext from "../../contexts/adminContext";
@@ -21,22 +21,37 @@ class Admin extends React.Component {
     this.setState({ contentLoading });
 
   render() {
-    const { history, match } = this.props;
+    const { match } = this.props;
+    
     return (
       <AdminContext.Provider value={{ ...this.state }}>
         <Loader />
         <SideMenu match={match} />
-        <div>
-          <Header />
-          <Switch>
-            <Route
-              exact
-              path={`${match.url}/check`}
-              component={() => history.push("/checkoutForm")}
-            />
-            <Route exact path="/checkoutForm" component={CheckoutFormPage} />
-          </Switch>
+        <Header />
+
+        <div className="pcoded-main-container">
+          <div className="pcoded-wrapper">
+            <div className="pcoded-content">
+              <div className="pcoded-inner-content">
+                <div className="main-body">
+                  <Switch>
+                    <Route
+                      exact
+                      path={`${match.url}`}
+                      component={() => <Redirect to={`${match.url}/checkoutForm`} />}
+                    />
+                    <Route
+                      exact
+                      path={`${match.url}/checkoutForm`}
+                      component={CheckoutFormPage}
+                    />
+                  </Switch>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
       </AdminContext.Provider>
     );
   }

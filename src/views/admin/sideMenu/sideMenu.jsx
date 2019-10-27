@@ -15,7 +15,7 @@ export default function SideMenu({ match }) {
               <label>Navigation</label>
             </li>
             <MenuOption
-              label="Checkout Form"
+              label="Form"
               route={`${match.url}/checkoutForm`}
               icon="home"
             />

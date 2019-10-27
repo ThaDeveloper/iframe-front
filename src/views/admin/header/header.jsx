@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import UserContext from "../../../contexts/userContext"
@@ -25,41 +27,22 @@ function Header() {
             <ul className="navbar-nav ml-auto">
               <li>
                 <div className="dropdown drp-user">
-                  <a
-                    className="dropdown-toggle"
-                    data-toggle="dropdown"
-                  >
+                  <a className="dropdown-toggle" data-toggle="dropdown">
                     <i className="icon feather icon-settings" />
                   </a>
                   <div className="dropdown-menu dropdown-menu-right profile-notification">
                     <div className="pro-head">
-                      <img
-                        src="assets/images/user/avatar-1.jpg"
-                        className="img-radius"
-                        alt="User-Profile"
-                      />
-                      <span>{value.user.name}</span>
-                      <a
-                        href="auth-signin.html"
+                      <i className="icon feather icon-user mr-1" />
+                      <span>{value.user.username}</span>
+                      <span
+                        role="button"
                         className="dud-logout"
                         title="Logout"
-                        onClick={() => value.logout() }
+                        onClick={() => value.logout()}
                       >
                         <i className="feather icon-log-out" />
-                      </a>
+                      </span>
                     </div>
-                    <ul className="pro-body">
-                      {/* <li>
-                    <a href="#!" className="dropdown-item">
-                      <i className="feather icon-settings" /> Settings
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#!" className="dropdown-item">
-                      <i className="feather icon-user" /> Profile
-                    </a>
-                  </li> */}
-                    </ul>
                   </div>
                 </div>
               </li>

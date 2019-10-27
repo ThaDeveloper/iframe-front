@@ -9,10 +9,10 @@ const axiosUnprotected = axios.create(defaultConfig);
 const axiosProtected = axios.create(defaultConfig);
 
 axiosProtected.interceptors.request.use(config => {
-  const user = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
   const newConfig = config;
 
-  if (user.token) newConfig.headers.Authorization = `Token ${user.token}`;
+  if (token) newConfig.headers.Authorization = `Bearer ${token}`;
   return newConfig;
 });
 

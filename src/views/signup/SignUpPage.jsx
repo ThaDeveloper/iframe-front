@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AuthenticationAPI from "../../api/AuthenticationAPI";
-import '../../assets/css/style.css';
 import './signup.scss';
 
 const ERROR_MESSAGES = {
