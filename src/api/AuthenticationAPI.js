@@ -10,9 +10,14 @@ export default class AuthenticationAPI {
         }
       })
       .catch(response => {
+        if(!response.error) return {
+          success: false,
+          error: { status: 500, data: {} }
+        };
+
         return {
           success: false,
-          error : response
+          error: response.error
         };
       });
     }
